@@ -2,30 +2,7 @@
 import { useState } from "react";
 import { MoreVertical, Clock, Users, Laptop, DollarSign } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, ResponsiveContainer } from "recharts";
-import Link from "next/link";
-import {
-  ChevronDown,
-  CreditCard,
-  Shield,
-  Terminal,
-  Wallet,
-  Building,
-  Receipt,
-  Calculator,
-  FileText,
-  Database,
-} from "lucide-react";
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Payments", href: "/payments" },
-  { name: "Balances", href: "/balances" },
-  { name: "Customers", href: "/customers" },
-  { name: "Products", href: "/products" },
-  { name: "Billing", href: "/billing" },
-  { name: "Reports", href: "/reports" },
-  { name: "Connect", href: "/connect" },
-];
 const weeklyData = [
   { value: 30 },
   { value: 55 },
@@ -50,31 +27,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-white-200 to-indigo-100 bg-white p-6 space-y-6">
-      <div>
-        <nav className="w-full bg-white/5 backdrop-blur-sm border-b border-white/10">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex space-x-1">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => setSelected(item.name)}
-                  className={(
-                    "px-4 py-3 text-sm transition-colors relative",
-                    selected === item.name
-                      ? "text-black"
-                      : "text-black/70 hover:text-black")
-                  }
-                >
-                  {item.name}
-                  {selected === item.name && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-      </div>
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           {/* Congratulations Card */}
