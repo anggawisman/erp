@@ -21,21 +21,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Add, Help, Upload, MoreVert } from "@mui/icons-material";
-
-function TabPanel({ children, value, index, ...other }) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-      className="py-4"
-    >
-      {value === index && children}
-    </div>
-  );
-}
+import Badge from "../components/badge";
 
 function ContactForm({
   formData,
@@ -69,171 +55,143 @@ function ContactForm({
     }
   };
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
-    >
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Nama
-          </label>
-          <input
-            required
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleFormChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
-            placeholder="Masukkan nama Anda"
-          />
-          {errors.name && (
-            <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-          )}
-        </div>
+    <form onSubmit={handleFormSubmit} className="flex flex-col gap-2 ">
+      <div className="">
+        <label htmlFor="name" className="block text-sm font-medium">
+          Nama
+        </label>
+        <input
+          required
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleFormChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          placeholder="Masukkan nama Anda"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+        )}
+      </div>
 
-        <div className="space-y-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            required
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleFormChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
-            placeholder="email@example.com"
-          />
-          {errors.email && (
+      <div className="">
+        <label htmlFor="email" className="block text-sm font-medium">
+          Email
+        </label>
+        <input
+          // required
+          id="email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleFormChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          placeholder="email@example.com"
+        />
+        {/* {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-          )}
-        </div>
+          )} */}
+      </div>
 
-        <div className="space-y-4">
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Telepon
+      <div className="">
+        <label htmlFor="phone" className="block text-sm font-medium">
+          Telepon
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          value={formData.phone}
+          onChange={handleFormChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          placeholder="+62 123 4567 890"
+        />
+        {errors.phone && (
+          <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="">
+          <label htmlFor="npwp" className="block text-sm font-medium">
+            NPWP/KTP
+            <button
+              title="Informasi lebih lanjut tentang NPWP/KTP"
+              className="ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            >
+              ?
+            </button>
           </label>
           <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
+            id="npwp"
+            name="npwp"
+            value={formData.npwp}
             onChange={handleFormChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
-            placeholder="+62 123 4567 890"
+            placeholder="Masukkan NPWP/KTP"
           />
-          {errors.phone && (
-            <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+          {errors.npwp && (
+            <p className="text-red-500 text-xs mt-1">{errors.npwp}</p>
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <label
-              htmlFor="npwp"
-              className="block text-sm font-medium text-gray-700"
-            >
-              NPWP/KTP
-              <button className="ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                ?
-              </button>
-            </label>
+        <div className="">
+          <p className="block text-sm font-medium">Unggah Dokumen Pendukung</p>
+          <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition duration-200 ease-in-out">
+            <Upload className="w-5 h-5 mr-2 text-blue-500" />
+            <span className="text-sm text-blue-500">
+              {file ? file.name : "Unggah Dokumen"}
+            </span>
             <input
-              id="npwp"
-              name="npwp"
-              value={formData.npwp}
-              onChange={handleFormChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
-              placeholder="Masukkan NPWP/KTP"
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
             />
-            {errors.npwp && (
-              <p className="text-red-500 text-xs mt-1">{errors.npwp}</p>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <p className="block text-sm font-medium text-gray-700">
-              Unggah Dokumen Pendukung
-            </p>
-            <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition duration-200 ease-in-out">
-              <Upload className="w-5 h-5 mr-2 text-blue-500" />
-              <span className="text-sm text-blue-500">
-                {file ? file.name : "Unggah Dokumen"}
-              </span>
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <label
-            htmlFor="address"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Alamat
           </label>
-          <textarea
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleFormChange}
-            rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-none"
-            placeholder="Masukkan alamat lengkap"
-          ></textarea>
-          {errors.address && (
-            <p className="text-red-500 text-xs mt-1">{errors.address}</p>
-          )}
         </div>
+      </div>
 
-        <div className="space-y-4">
-          <p className="block text-sm font-medium text-gray-700">Pilih Tipe</p>
-          <div className="grid grid-cols-2 gap-4">
-            {["Pelanggan", "Pemasok", "Karyawan", "Penjual"].map((type) => (
-              <label
-                key={type}
-                className="flex items-center space-x-3 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  value={type}
-                  checked={formData.type.includes(type)}
-                  onChange={handleTypeChange}
-                  className="form-checkbox h-5 w-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 transition duration-200 ease-in-out"
-                />
-                <span className="text-gray-700">{type}</span>
-              </label>
-            ))}
-          </div>
-          {errors.type && (
-            <p className="text-red-500 text-xs mt-1">{errors.type}</p>
-          )}
-        </div>
+      <div className="">
+        <label htmlFor="address" className="block text-sm font-medium">
+          Alamat
+        </label>
+        <textarea
+          id="address"
+          name="address"
+          value={formData.address}
+          onChange={handleFormChange}
+          rows={4}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-none"
+          placeholder="Masukkan alamat lengkap"
+        ></textarea>
+        {errors.address && (
+          <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+        )}
+      </div>
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out"
-          >
-            Submit
-          </button>
+      <div className="">
+        <p className="block text-sm font-medium">Pilih Tipe</p>
+        <div className="grid grid-cols-2 gap-4">
+          {["Pelanggan", "Pemasok", "Karyawan", "Penjual"].map((type) => (
+            <label
+              key={type}
+              className="flex items-center space-x-3 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                value={type}
+                checked={formData.type.includes(type)}
+                onChange={handleTypeChange}
+                className="form-checkbox h-5 w-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 transition duration-200 ease-in-out"
+              />
+              <span className="">{type}</span>
+            </label>
+          ))}
         </div>
+        {errors.type && (
+          <p className="text-red-500 text-xs mt-1">{errors.type}</p>
+        )}
       </div>
     </form>
   );
@@ -273,6 +231,90 @@ export default function ContactsPage() {
     // },
   ]);
 
+  const columns = useMemo(
+    () => [
+      { name: "id", label: "Kode" },
+      {
+        name: "name",
+        label: "Nama",
+        options: {
+          setCellProps: () => ({
+            className: "uppercase", // Add custom class to this column
+          }),
+        },
+      },
+      {
+        name: "email",
+        label: "Email",
+        options: {
+          empty: true,
+          setCellProps: () => ({
+            className: "uppercase", // Add custom class to this column
+          }),
+        },
+      },
+      {
+        name: "type",
+        label: "Tipe",
+        options: {
+          customBodyRender: (value, tableMeta) => {
+            // Dynamically assign badge types based on value
+            const badgeMapping = {
+              pelanggan: "blue-badge",
+              pemasok: "green-badge",
+              karyawan: "yellow-badge",
+              penjual: "red-badge",
+              stories: "gray-badge",
+            };
+
+            return Array.isArray(value) ? (
+              <div className="flex flex-wrap gap-2">
+                {value.map((item, index) => (
+                  <Badge
+                    key={index}
+                    badgeType={badgeMapping[item.toLowerCase()] || "gray-badge"}
+                    textValue={item}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Badge
+                badgeType={badgeMapping[value.toLowerCase()] || "gray-badge"}
+                textValue={value}
+              />
+            );
+          },
+        },
+      },
+      { name: "website", label: "Website", options: { empty: true } },
+      { name: "phone", label: "Telepon", options: { empty: true } },
+      {
+        name: "actions",
+        label: "Actions",
+        options: {
+          customBodyRender: (_, tableMeta) => (
+            <button
+              onClick={(e) => handleOpenMenu(e, contacts[tableMeta.rowIndex])}
+            >
+              <MoreVert />
+            </button>
+          ),
+        },
+      },
+    ],
+    [contacts]
+  );
+
+  const options = useMemo(
+    () => ({
+      selectableRows: "none",
+      responsive: "standard",
+      download: false, // Hides the download button
+      print: false, // Hides the print button
+    }),
+    []
+  );
+
   const [formData, setFormData] = useState({
     name: "",
     code: "",
@@ -294,7 +336,7 @@ export default function ContactsPage() {
   const validateForm = () => {
     let formErrors = {};
     if (!formData.name) formErrors.name = "Nama tidak boleh kosong";
-    if (!formData.email) formErrors.email = "Email tidak boleh kosong";
+    // if (!formData.email) formErrors.email = "Email tidak boleh kosong";
     // if (!formData.phone) formErrors.phone = "Nomor telepon tidak boleh kosong";
     // if (!formData.npwp) formErrors.npwp = "NPWP/KTP tidak boleh kosong";
     // if (!formData.address) formErrors.address = "Alamat tidak boleh kosong";
@@ -340,64 +382,6 @@ export default function ContactsPage() {
     }
   };
 
-  const columns = useMemo(
-    () => [
-      { name: "id", label: "Kode" },
-      {
-        name: "name",
-        label: "Nama",
-        options: {
-          setCellProps: () => ({
-            className: "uppercase", // Add custom class to this column
-          }),
-        },
-      },
-      {
-        name: "email",
-        label: "Email",
-        options: {
-          empty: true,
-          setCellProps: () => ({
-            className: "uppercase", // Add custom class to this column
-          }),
-        },
-      },
-      {
-        name: "type",
-        label: "Tipe",
-        options: {
-          customBodyRender: (_, tableMeta) => {
-            return _.join(", ");
-          },
-        },
-      },
-      { name: "website", label: "Website", options: { empty: true } },
-      { name: "phone", label: "Telepon", options: { empty: true } },
-      {
-        name: "actions",
-        label: "Actions",
-        options: {
-          customBodyRender: (_, tableMeta) => (
-            <IconButton
-              onClick={(e) => handleOpenMenu(e, contacts[tableMeta.rowIndex])}
-            >
-              <MoreVert />
-            </IconButton>
-          ),
-        },
-      },
-    ],
-    [contacts]
-  );
-
-  const options = useMemo(
-    () => ({
-      selectableRows: "none",
-      responsive: "standard",
-    }),
-    []
-  );
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
 
@@ -439,159 +423,152 @@ export default function ContactsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <section className="bg-white shadow rounded-lg p-6 space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-800">Daftar Kontak</h1>
-          <Button
-            onClick={() => setOpen(true)}
-            variant="outlined"
-            startIcon={<Add />}
-          >
-            Tambah Kontak
-          </Button>
-        </div>
-
-        {/* Modal for the form */}
-        <Dialog
-          open={open}
-          onClose={() => setOpen(false)}
-          maxWidth="sm"
-          fullWidth
+    <section className="min-h-screen bg-gray-100 p-12 ">
+      <div className="flex justify-between items-center p-6">
+        <h1 className="text-xl font-bold text-gray-800">Daftar Kontak</h1>
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center px-4 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-gray-200 transition"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2 "
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          Tambah Kontak
+        </button>
+      </div>
+
+      <MUIDataTable
+        data={contacts}
+        columns={columns}
+        options={options}
+        className={"rounded-lg text-gray-800"}
+      />
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={handleDetail}>Detail</MenuItem>
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+      </Menu>
+
+      {/* Modal for the form */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-10 ${
+          open ? "" : "hidden"
+        }`}
+      >
+        <div className="relative w-full max-w-md bg-white rounded-lg shadow-lg text-gray-800">
           {/* Popup Message */}
           {popupMessage && (
-            // <div
-            //   className="m-4 p-4 text-sm text-white bg-red-600 rounded-md"
-            //   role="alert"
-            // >
-            //   {popupMessage}
-            // </div>
-
-            <div className="relative isolate flex items-center gap-x-6 overflow-hidden text-white bg-red-700 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 m-4 p-4 rounded-md">
-              {/* <div
-                aria-hidden="true"
-                className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-              >
-                <div
-                  style={{
-                    clipPath:
-                      "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-                  }}
-                  className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                className="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-              >
-                <div
-                  style={{
-                    clipPath:
-                      "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-                  }}
-                  className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-                />
-              </div> */}
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <p className="text-sm/6 ">
-                  <strong className="font-semibold">Error</strong>
-                  <svg
-                    viewBox="0 0 2 2"
-                    aria-hidden="true"
-                    className="mx-2 inline size-0.5 fill-current"
-                  >
-                    <circle r={1} cx={1} cy={1} />
-                  </svg>
-                  {popupMessage}
-                </p>
-                {/* <a
-                  href="#"
-                  className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-                >
-                  Register now <span aria-hidden="true">&rarr;</span>
-                </a> */}
-              </div>
-              <div className="flex flex-1 justify-end">
-                {/* <button
-                  type="button"
-                  className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-                >
-                  <span className="sr-only">Dismiss</span>
-                  x
-                </button> */}
-              </div>
+            <div className="m-4 p-4 text-sm text-white bg-red-600 rounded-md">
+              <strong className="font-semibold">Error</strong>
+              <span className="mx-2">•</span>
+              {popupMessage}
             </div>
           )}
-          <DialogTitle className="flex items-center gap-2 border-b pb-4">
-            <Add className="h-5 w-5" />
-            Tambah Kontak
-          </DialogTitle>
 
-          <DialogContent className="!pt-6">
-            <Tabs
-              value={tabValue}
-              onChange={(e, newValue) => setTabValue(newValue)}
-              variant="fullWidth"
-              className="border-b"
+          {/* Modal Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b">
+            <h3 className="text-lg font-semibold">Tambah Kontak</h3>
+            <button
+              onClick={() => setOpen(false)}
+              className="text-gray-500 hover:text-gray-800"
+              aria-label="Close"
             >
-              <Tab label="Umum" />
-              <Tab label="Alamat" />
-              <Tab label="Data Lain" />
-            </Tabs>
+              &times;
+            </button>
+          </div>
 
-            <TabPanel value={tabValue} index={0}>
-              <ContactForm
-                formData={formData}
-                handleFormChange={handleFormChange}
-                handleFormSubmit={handleFormSubmit}
-                setOpen={setOpen}
-                errors={errors}
-              />
-            </TabPanel>
+          {/* Modal Content */}
+          <div className=" h-[60vh] overflow-y-auto p-4">
+            <div className="flex border-b mb-4">
+              <button
+                className={`flex-1 py-2 text-center ${
+                  tabValue === 0
+                    ? "border-b-2 border-blue-500 text-blue-500"
+                    : ""
+                }`}
+                onClick={() => setTabValue(0)}
+              >
+                Umum
+              </button>
+              <button
+                className={`flex-1 py-2 text-center ${
+                  tabValue === 1
+                    ? "border-b-2 border-blue-500 text-blue-500"
+                    : ""
+                }`}
+                onClick={() => setTabValue(1)}
+              >
+                Alamat
+              </button>
+              <button
+                className={`flex-1 py-2 text-center ${
+                  tabValue === 2
+                    ? "border-b-2 border-blue-500 text-blue-500"
+                    : ""
+                }`}
+                onClick={() => setTabValue(2)}
+              >
+                Data Lain
+              </button>
+            </div>
 
-            <TabPanel value={tabValue} index={1}>
+            {/* Tab Panels */}
+            {tabValue === 0 && (
+              <div className="">
+                {/* Replace with your ContactForm */}
+                <ContactForm
+                  formData={formData}
+                  handleFormChange={handleFormChange}
+                  handleFormSubmit={handleFormSubmit}
+                  setOpen={setOpen}
+                  errors={errors}
+                />
+              </div>
+            )}
+            {tabValue === 1 && (
               <div className="text-sm text-gray-500">
                 Konten alamat akan ditampilkan di sini
               </div>
-            </TabPanel>
-
-            <TabPanel value={tabValue} index={2}>
+            )}
+            {tabValue === 2 && (
               <div className="text-sm text-gray-500">
                 Data lain akan ditampilkan di sini
               </div>
-            </TabPanel>
+            )}
+          </div>
 
-            <div className="flex justify-end pt-4 gap-2">
-              <Button
-                onClick={handleFormSubmit}
-                variant="contained"
-                color="primary"
-              >
-                Simpan
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => setOpen(false)}
-                className="normal-case"
-              >
-                Batal
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        <MUIDataTable data={contacts} columns={columns} options={options} />
-
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem onClick={handleDetail}>Detail</MenuItem>
-          <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        </Menu>
-      </section>
-    </div>
+          {/* Modal Footer */}
+          <div className="flex justify-end px-4 py-3 border-t gap-2">
+            <button
+              onClick={handleFormSubmit}
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            >
+              Simpan
+            </button>
+            <button
+              onClick={() => setOpen(false)}
+              className="px-4 py-2  bg-gray-200 rounded-md hover:bg-gray-300"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
