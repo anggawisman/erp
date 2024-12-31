@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { MoreVertical, Clock, Users, Laptop, DollarSign } from "lucide-react";
+// import { MoreVert, AccessTime, People, Computer, AttachMoney } from "@mui/material";
+import { MoreVert, AccessTime, People, Computer, AttachMoney } from "@mui/icons-material";
 import { BarChart, Bar, LineChart, Line, ResponsiveContainer } from "recharts";
 
 const weeklyData = [
@@ -60,7 +61,7 @@ export default function Dashboard() {
                 Transactions
               </h3>
               <button className="text-blue-950/70 hover:text-blue-950 hover:bg-white/10 p-1 rounded-full transition-colors">
-                <MoreVertical className="h-5 w-5" />
+                <MoreVert className="h-5 w-5" />
               </button>
             </div>
             <p className="text-sm mb-4 text-blue-950/70">
@@ -69,7 +70,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-purple-300" />
+                  <AccessTime className="h-4 w-4 text-purple-300" />
                   <span className="text-sm font-medium text-blue-950/70">
                     Sales
                   </span>
@@ -78,7 +79,7 @@ export default function Dashboard() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-green-300" />
+                  <People className="h-4 w-4 text-green-300" />
                   <span className="text-sm font-medium text-blue-950/70">
                     Users
                   </span>
@@ -87,7 +88,7 @@ export default function Dashboard() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Laptop className="h-4 w-4 text-orange-300" />
+                  <Computer className="h-4 w-4 text-orange-300" />
                   <span className="text-sm font-medium text-blue-950/70">
                     Products
                   </span>
@@ -96,7 +97,7 @@ export default function Dashboard() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-blue-300" />
+                  <AttachMoney className="h-4 w-4 text-blue-300" />
                   <span className="text-sm font-medium text-blue-950/70">
                     Revenue
                   </span>
@@ -113,7 +114,7 @@ export default function Dashboard() {
                 Weekly Overview
               </h3>
               <button className="text-blue-950/70 hover:text-blue-950 hover:bg-white/10 p-1 rounded-full transition-colors">
-                <MoreVertical className="h-5 w-5" />
+                <MoreVert className="h-5 w-5" />
               </button>
             </div>
             <div className="h-[200px] w-full">
@@ -141,7 +142,7 @@ export default function Dashboard() {
                 Total Earning
               </h3>
               <button className="text-blue-950/70 hover:text-blue-950 hover:bg-white/10 p-1 rounded-full transition-colors">
-                <MoreVertical className="h-5 w-5" />
+                <MoreVert className="h-5 w-5" />
               </button>
             </div>
             <div className="space-y-4">
