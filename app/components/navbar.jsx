@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const routes = [
     { name: 'Dashboard', href: '/' },
-    { name: 'Data Kontak', href: '/kontak' },
+    { name: 'Data Master', href: '/master' },
     // { name: 'Products', href: '/products' },
     // { name: 'Inventory', href: '/inventory' },
     // { name: 'Sales Orders', href: '/sales' },

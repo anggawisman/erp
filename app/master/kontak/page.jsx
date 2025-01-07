@@ -1,27 +1,9 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Button,
-  Menu,
-  MenuItem,
-  IconButton,
-  Checkbox,
-  FormControl,
-  FormGroup,
-  FormControlLabel,
-  FormLabel,
-  Tab,
-  Tabs,
-  Tooltip,
-} from "@mui/material";
-import { Add, Help, Upload, MoreVert } from "@mui/icons-material";
-import Badge from "../components/badge";
+import { Menu, MenuItem, CircularProgress, Box } from "@mui/material";
+import { Upload, MoreVert } from "@mui/icons-material";
+import Badge from "../../components/badge";
 
 function ContactForm({
   formData,
@@ -55,9 +37,9 @@ function ContactForm({
     }
   };
   return (
-    <form onSubmit={handleFormSubmit} className="flex flex-col gap-2 ">
+    <form onSubmit={handleFormSubmit} className="flex flex-col gap-2 space-y-4">
       <div className="">
-        <label htmlFor="name" className="block text-sm font-medium">
+        <label htmlFor="name" className="block text-sm font-semibold">
           Nama
         </label>
         <input
@@ -66,7 +48,7 @@ function ContactForm({
           name="name"
           value={formData.name}
           onChange={handleFormChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          className="w-full p-2 text-sm border-b outline-none "
           placeholder="Masukkan nama Anda"
         />
         {errors.name && (
@@ -75,7 +57,7 @@ function ContactForm({
       </div>
 
       <div className="">
-        <label htmlFor="email" className="block text-sm font-medium">
+        <label htmlFor="email" className="block text-sm font-semibold">
           Email
         </label>
         <input
@@ -85,7 +67,7 @@ function ContactForm({
           type="email"
           value={formData.email}
           onChange={handleFormChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          className="w-full p-2 text-sm border-b outline-none "
           placeholder="email@example.com"
         />
         {/* {errors.email && (
@@ -94,7 +76,7 @@ function ContactForm({
       </div>
 
       <div className="">
-        <label htmlFor="phone" className="block text-sm font-medium">
+        <label htmlFor="phone" className="block text-sm font-semibold">
           Telepon
         </label>
         <input
@@ -103,7 +85,7 @@ function ContactForm({
           type="tel"
           value={formData.phone}
           onChange={handleFormChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+          className="w-full p-2 text-sm border-b outline-none "
           placeholder="+62 123 4567 890"
         />
         {errors.phone && (
@@ -113,7 +95,7 @@ function ContactForm({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="">
-          <label htmlFor="npwp" className="block text-sm font-medium">
+          <label htmlFor="npwp" className="block text-sm font-semibold">
             NPWP/KTP
             <button
               title="Informasi lebih lanjut tentang NPWP/KTP"
@@ -127,7 +109,7 @@ function ContactForm({
             name="npwp"
             value={formData.npwp}
             onChange={handleFormChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+            className="w-full p-2 text-sm border-b outline-none "
             placeholder="Masukkan NPWP/KTP"
           />
           {errors.npwp && (
@@ -136,7 +118,9 @@ function ContactForm({
         </div>
 
         <div className="">
-          <p className="block text-sm font-medium">Unggah Dokumen Pendukung</p>
+          <p className="block text-sm font-semibold">
+            Unggah Dokumen Pendukung
+          </p>
           <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition duration-200 ease-in-out">
             <Upload className="w-5 h-5 mr-2 text-blue-500" />
             <span className="text-sm text-blue-500">
@@ -153,7 +137,7 @@ function ContactForm({
       </div>
 
       <div className="">
-        <label htmlFor="address" className="block text-sm font-medium">
+        <label htmlFor="address" className="block text-sm font-semibold">
           Alamat
         </label>
         <textarea
@@ -162,7 +146,7 @@ function ContactForm({
           value={formData.address}
           onChange={handleFormChange}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-none"
+          className="w-full p-2 text-sm border-b outline-none  resize-none"
           placeholder="Masukkan alamat lengkap"
         ></textarea>
         {errors.address && (
@@ -171,7 +155,7 @@ function ContactForm({
       </div>
 
       <div className="">
-        <p className="block text-sm font-medium">Pilih Tipe</p>
+        <p className="block text-sm font-semibold">Pilih Tipe</p>
         <div className="grid grid-cols-2 gap-4">
           {["Pelanggan", "Pemasok", "Karyawan", "Penjual"].map((type) => (
             <label
@@ -198,6 +182,7 @@ function ContactForm({
 }
 
 export default function ContactsPage() {
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [contacts, setContacts] = useState([
@@ -353,6 +338,8 @@ export default function ContactsPage() {
     }
 
     try {
+      setLoading(true);
+
       const response = await fetch("/api/contacts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -379,6 +366,8 @@ export default function ContactsPage() {
     } catch (error) {
       setPopupMessage("Kesalahan Jaringan!");
       console.error("Error adding contact:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -416,19 +405,28 @@ export default function ContactsPage() {
       }
     } catch (error) {
       console.error("Error fetching contacts:", error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
     fetchContacts();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+      </div>
+    );
+  }
   return (
     <section className="min-h-screen bg-gray-100 p-12 ">
       <div className="flex justify-between items-center p-6">
         <h1 className="text-xl font-bold text-gray-800">Daftar Kontak</h1>
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center px-4 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-gray-200 transition"
+          className="flex items-center px-4 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-gray-200 transition text-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -470,7 +468,7 @@ export default function ContactsPage() {
           open ? "" : "hidden"
         }`}
       >
-        <div className="relative w-full max-w-md bg-white rounded-lg shadow-lg text-gray-800">
+        <div className="relative w-full max-w-xl bg-white rounded-lg shadow-lg text-gray-800">
           {/* Popup Message */}
           {popupMessage && (
             <div className="m-4 p-4 text-sm text-white bg-red-600 rounded-md">
@@ -541,9 +539,82 @@ export default function ContactsPage() {
               </div>
             )}
             {tabValue === 1 && (
-              <div className="text-sm text-gray-500">
-                Konten alamat akan ditampilkan di sini
-              </div>
+              <form className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="companyName"
+                    className="block text-sm font-semibold"
+                  >
+                    Company Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="companyName"
+                    className="w-full p-2 text-sm border-b outline-none "
+                    placeholder="Enter company name"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-semibold"
+                    >
+                      City <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      className="w-full p-2 text-sm border-b outline-none "
+                      placeholder="Enter city"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="postalCode"
+                      className="block text-sm font-semibold"
+                    >
+                      Postal Code <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      className="w-full p-2 text-sm border-b outline-none "
+                      placeholder="Enter postal code"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="streetAddress"
+                    className="block text-sm font-semibold"
+                  >
+                    Street Address <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="streetAddress"
+                    className="w-full p-2 text-sm border-b outline-none "
+                    placeholder="Enter street address"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block text-sm font-semibold"
+                  >
+                    Country <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="country"
+                    className="w-full p-2 text-sm border-b outline-none "
+                  >
+                    <option value="USA">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">UK</option>
+                  </select>
+                </div>
+              </form>
             )}
             {tabValue === 2 && (
               <div className="text-sm text-gray-500">

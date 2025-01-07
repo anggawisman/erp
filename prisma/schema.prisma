@@ -17,7 +17,7 @@ model Contact {
   currencyId Int
   currency   Currency @relation("ContactCurrency", fields: [currencyId], references: [id])
   salesOrders SalesOrder[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -67,6 +67,9 @@ model Account {
   subclassificationId Int
   subclassification   Subclassification @relation(fields: [subclassificationId], references: [id])
   balance             Float             @default(0.0)
+  salesOrdersMain     SalesOrder[]      @relation("SalesOrderMainAccount")
+  salesOrdersSub      SalesOrder[]      @relation("SalesOrderSubAccount")
+  salesOrdersTax SalesOrder[] @relation("SalesOrderTaxAccount")
 
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
@@ -93,34 +96,40 @@ model Warehouse {
   companyId   Int
   company     Company      @relation(fields: [companyId], references: [id])
   inventories Inventory[]
+  salesOrders SalesOrder[]
+
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?     @updatedAt
 }
 
 model Inventory {
-  id             Int           @id @default(autoincrement())
-  sku       String            @unique
-  name           String        // Name of the item
-  description    String?       // Optional description
-  quantity       Int           // Quantity available
-  warehouseId    Int
-  warehouse      Warehouse     @relation(fields: [warehouseId], references: [id])
-  unitOfMeasureId Int
-  unitOfMeasure  UnitOfMeasure @relation(fields: [unitOfMeasureId], references: [id])
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime?      @updatedAt
+  id              Int            @id @default(autoincrement())
+  sku             String         @unique
+  name            String         // Name of the item
+  description     String?        // Optional description
+  quantity        Int            // Quantity available
+  warehouseId     Int
+  warehouse       Warehouse      @relation(fields: [warehouseId], references: [id])
+  unitOfMeasureId Int?
+  unitOfMeasure   UnitOfMeasure? @relation("UnitOfMeasureRelation",fields: [unitOfMeasureId], references: [id])
+  salesOrders     SalesOrder[]   @relation("SalesOrderInventory")
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?      @updatedAt
 }
 
 model UnitOfMeasure {
-  id          Int             @id @default(autoincrement())
-  name        String          // Name of the unit (e.g., "Box", "Piece", "Kilogram")
-  description String?         // Optional description
-  subUnitId   Int?            // Self-referencing relationship for sub-units
-  subUnit     UnitOfMeasure?  @relation("SubUnitRelation", fields: [subUnitId], references: [id])
-  mainUnits   UnitOfMeasure[] @relation("SubUnitRelation")
-  conversionFactor Float?     // Conversion factor to main unit (e.g., 1 box = 12 pieces)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime?        @updatedAt
+  id               Int              @id @default(autoincrement())
+  name             String           // Name of the unit (e.g., "Box", "Piece", "Kilogram")
+  description      String?          // Optional description
+  subUnitId        Int?             // Self-referencing relationship for sub-units
+  subUnit          UnitOfMeasure?   @relation("SubUnitRelation", fields: [subUnitId], references: [id])
+  mainUnits        UnitOfMeasure[]  @relation("SubUnitRelation")
+  conversionFactor Float?           // Conversion factor to main unit (e.g., 1 box = 12 pieces)
+  inventory     Inventory[]   @relation("UnitOfMeasureRelation")
+
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime?        @updatedAt
 }
 
 model SalesOrder {
@@ -129,8 +138,27 @@ model SalesOrder {
   customerName  String
   status        String         // Example: 'Pending', 'Confirmed', 'Delivered'
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime?      @updatedAt
   totalAmount   Float
+  orderDate     DateTime       @default(now())
+  taxAccountId  Int
+  taxAccount    Account @relation("SalesOrderTaxAccount", fields: [taxAccountId], references: [id])
+
+
+  contactId     Int
+  contact       Contact        @relation(fields: [contactId], references: [id])
+
+  mainAccountId Int
+  mainAccount   Account        @relation("SalesOrderMainAccount", fields: [mainAccountId], references: [id])
+
+  subAccountId  Int?
+  subAccount    Account?       @relation("SalesOrderSubAccount", fields: [subAccountId], references: [id])
+
+  warehouseId   Int
+  warehouse     Warehouse      @relation(fields: [warehouseId], references: [id])
+
+  inventories   Inventory[]    @relation("SalesOrderInventory")
+
   deliveryOrders DeliveryOrder[]
   invoices      Invoice[]
 
